@@ -15,48 +15,54 @@ window.addEventListener("load", e => {
       console.log("SW reg failed");
     }
   }
+
+  if (navigator.onLine) {
+    fetch("https://cmgt.hr.nl:8000/api/projects/tags")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data.tags);
+        // document.write("<div>" + data.tags[0] + "</div>")
+      });
+  } else {
+    console.log("is offline");
+    document.getElementById("status").innerHTML = "OFFLINEEEEEE";
+  }
+
 });
 
 async function updateProjects() {
   const rawData = await fetch("https://cmgt.hr.nl:8000/api/projects/");
   const jsonData = await rawData.json();
-  //   console.log(jsonData.projects);
   main.innerHTML = jsonData.projects.map(createProject).join("\n");
 
-  var projectIds1 = [];
+  let projectIds1 = [];
 
   jsonData.projects.forEach(function(project) {
     projectIds1.push(project._id);
     localforage
       .setItem(project._id, project)
-    //   .then(function(value) {
-    //     console.log(value);
-    //   })
       .catch(function(err) {
         console.error(err);
       });
   });
-
 }
 
-function createProject(project) { 
-  return `
-        <div class="project">
-            <h2>${project.title}</h2>
-            <img src="https://cmgt.hr.nl:8000/${project.headerImage}" alt="${project.title}"></img>
-            <p>${project.description}</p>
-        </div>
-    `;
+function createProject(project) {
+  localforage
+    .getItem(project._id)
+    .then(function(project) {
+        document.querySelector("main").insertAdjacentHTML(
+        "afterbegin",
+        `<div class="project">
+        <h2>${project.title}</h2>
+        <img src="https://cmgt.hr.nl:8000/${project.headerImage}" alt="${project.title}"></img>
+        <p>${project.description}</p>
+      </div>`
+      );
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 }
-
-localforage.length().then(function(numberOfKeys) {
-    // Outputs the length of the database.
-    for (let i = 0; i >= numberOfKeys; i++){
-        console.log(numberOfKeys);
-    }
-
-}).catch(function(err) {
-    // This code runs if there were any errors
-    console.log(err);
-});
-
