@@ -1,0 +1,23 @@
+{
+  "name": "pwa",
+  "version": "1.0.0",
+  "description": "programmeren",
+  "main": "app.js",
+  "dependencies": {
+    "localforage": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordy770/PWA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordy770/PWA/issues"
+  },
+  "homepage": "https://github.com/jordy770/PWA#readme"
+}
