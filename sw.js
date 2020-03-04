@@ -10,13 +10,14 @@ self.addEventListener('install', async event =>{
 });
 
 self.addEventListener('activate', (event) => {
-    let cacheWhitelist = ['products-v2'] // products-v2 is the name of the new cache
+    let cacheWhitelist = ['projects-static'] // products-v2 is the name of the new cache
 
     event.waitUntil(
         caches.keys().then (cacheNames => {
             return Promise.all(
                 cacheNames.map( cacheName => {
                     /* Deleting all the caches except the ones that are in cacheWhitelist array */
+                    // if (cacheWhitelist.indexOf(cacheName) === -1) {
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName)
                     }

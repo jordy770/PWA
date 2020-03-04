@@ -22,14 +22,19 @@ window.addEventListener("load", e => {
         return response.json();
       })
       .then(data => {
-        console.log(data.tags);
-        // document.write("<div>" + data.tags[0] + "</div>")
+        
+        var text = "";
+
+        for(let i= 0; i < data.tags.length; i++) {
+
+          text += data.tags[i] + "<br>";
+        }
+        document.getElementById("status").innerHTML= text;
       });
   } else {
-    console.log("is offline");
-    document.getElementById("status").innerHTML = "OFFLINEEEEEE";
+    // console.log("is offline");
+    document.getElementById("status").innerHTML = "The app is OFFLINEEEEEE";
   }
-
 });
 
 async function updateProjects() {
