@@ -2,8 +2,6 @@ if (!window.indexedDB) {
   window.alert("Your browser doesn't support a stable version of IndexedDB.");
 }
 
-const main = document.querySelector("main");
-
 window.addEventListener("load", e => {
   updateProjects();
 
@@ -22,17 +20,14 @@ window.addEventListener("load", e => {
         return response.json();
       })
       .then(data => {
-        
         var text = "";
 
-        for(let i= 0; i < data.tags.length; i++) {
-
+        for (let i = 0; i < data.tags.length; i++) {
           text += data.tags[i] + "<br>";
         }
-        document.getElementById("status").innerHTML= text;
+        document.getElementById("status").innerHTML = text;
       });
   } else {
-    // console.log("is offline");
     document.getElementById("status").innerHTML = "The app is OFFLINEEEEEE";
   }
 });
@@ -40,17 +35,12 @@ window.addEventListener("load", e => {
 async function updateProjects() {
   const rawData = await fetch("https://cmgt.hr.nl:8000/api/projects/");
   const jsonData = await rawData.json();
-  main.innerHTML = jsonData.projects.map(createProject).join("\n");
-
-  let projectIds1 = [];
+  jsonData.projects.map(createProject);
 
   jsonData.projects.forEach(function(project) {
-    projectIds1.push(project._id);
-    localforage
-      .setItem(project._id, project)
-      .catch(function(err) {
-        console.error(err);
-      });
+    localforage.setItem(project._id, project).catch(function(err) {
+      console.error(err);
+    });
   });
 }
 
@@ -58,7 +48,7 @@ function createProject(project) {
   localforage
     .getItem(project._id)
     .then(function(project) {
-        document.querySelector("main").insertAdjacentHTML(
+      document.querySelector("main").insertAdjacentHTML(
         "afterbegin",
         `<div class="project">
         <h2>${project.title}</h2>
